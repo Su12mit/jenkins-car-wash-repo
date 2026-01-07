@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/Su12mit/jenkins-car-wash-repo.git'
+            }
+        }
+
+        stage('Deploy to Apache') {
+            steps {
+                sh '''
+                rm -rf /var/www/html/*
+                cp -r * /var/www/html/
+                '''
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo "✅ Deployment completed successfully!"
+        }
+        failure {
+            echo "❌ Deployment failed!"
+        }
+    }
+}
